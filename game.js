@@ -15,6 +15,8 @@ if (userChoice === computerChoice) {
     if (userChoice === 'rock' && computerChoice === 'scissors') {
         console.log("You Won!")
     } else if(userChoice === 'rock' && computerChoice === 'paper'); {
-        console.log("You suck ass! :P")
-    } 
+        console.log("You suck ass! :P");
+    } else if(userChoice === 'paper' && computerChoice === 'rock'); {
+        console.log('You Won!');
+    }
 }
