@@ -1,25 +1,50 @@
 var choices = ['rock', 'paper', 'scissors'];
-var computerChoice = choices[Math.floor(Math.random() * 3)];
+var playerScore = 0;
+var computerScore = 0;
 
-var userChoice;
-
-userChoice = prompt('Type your choice in lowercase ' + choices);
-
-let result = 'You: ' + userChoice + " VS " + "Computer: " + computerChoice;
-
-if (userChoice === computerChoice) {
-    result += ' Tie Game!'
-} else {
-    var win = " You Won! POGGERS";
-    if (userChoice === 'rock' && computerChoice === 'scissors') {
-        result += win;
-    } else if(userChoice === 'scissors' && computerChoice === 'paper') {
-        result += win;
-    } else if(userChoice === 'paper' && computerChoice === 'rock') {
-        result += win;
-    } else {
-        result += " You Suck! :P"
-    }
+function getComputerChoice() {
+    return choices[Math.floor(Math.random() * choices.length)];
 }
-document.getElementById("out").textContent = result + '\n';
-console.log(result);
+
+function playGame(userChoice) {
+  var computerChoice = getComputerChoice();
+  var result = 'You: ' + userChoice + ' VS Computer: ' + computerChoice;
+
+  var resultElement = document.getElementById('result');
+  resultElement.textContent = result;
+
+  if (userChoice === computerChoice) {
+      resultElement.classList.add('tie');
+      resultElement.classList.remove('win', 'lose');
+  } else if (
+      (userChoice === 'rock' && computerChoice === 'scissors') ||
+      (userChoice === 'scissors' && computerChoice === 'paper') ||
+      (userChoice === 'paper' && computerChoice === 'rock')
+  ) {
+      resultElement.classList.add('win');
+      resultElement.classList.remove('tie', 'lose');
+      playerScore++;
+  } else {
+      resultElement.classList.add('lose');
+      resultElement.classList.remove('tie', 'win');
+      computerScore++;
+  }
+
+  document.getElementById('score').textContent = 'Player: ' + playerScore + ' - Computer: ' + computerScore;
+
+  if (playerScore === 5) {
+      announceWinner("Player");
+  } else if (computerScore === 5) {
+      announceWinner("Computer");
+  }
+}
+
+function announceWinner(winner) {
+    var resultDiv = document.getElementById('result');
+    resultDiv.textContent = winner + " is the winner!";
+    resultDiv.style.color = 'green';
+
+    // Disable the choice buttons once a winner is announced.
+    var choiceButtons = document.querySelectorAll('.choices button');
+    choiceButtons.forEach(button => button.disabled = true);
+}
